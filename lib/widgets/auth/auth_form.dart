@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,16 +60,14 @@ class _AuthFormState extends State<AuthForm> {
                       ? 'Password must be at least 7 characters long.'
                       : null,
                 ),
+                const SizedBox(height: 16),
                 _isLoading
-                    ? const CircularProgressIndicator()
+                    ? const CircularProgressIndicator.adaptive()
                     : Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 32),
-                            child: ElevatedButton(
-                              onPressed: _validateThenAuthenticate,
-                              child: Text(_isSignIn ? 'Sign In' : 'Sign Up'),
-                            ),
+                          ElevatedButton(
+                            onPressed: _validateThenAuthenticate,
+                            child: Text(_isSignIn ? 'Sign In' : 'Sign Up'),
                           ),
                           TextButton(
                             onPressed: () =>
@@ -107,6 +106,7 @@ class _AuthFormState extends State<AuthForm> {
     UserCredential userCredential;
 
     try {
+      setState(() => _isLoading = true);
       if (_isSignIn) {
         userCredential = await auth.signInWithEmailAndPassword(
           email: _email,
@@ -117,22 +117,41 @@ class _AuthFormState extends State<AuthForm> {
           email: _email,
           password: _password,
         );
+
+        // Store the username after SignUp the user
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set(
+          {
+            'username': _username,
+            'email': _email,
+          },
+        );
       }
+    } on FirebaseAuthException catch (e) {
+      displayErrorMessage(e);
     } on PlatformException catch (e) {
-      var message = 'An error occurred, please check your credentials!';
-
-      if (e.message != null) {
-        message = e.message!;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+      displayErrorMessage(e);
     } catch (e) {
       debugPrint('$e');
+    } finally {
+      setState(() => _isLoading = false);
     }
+  }
+
+  void displayErrorMessage(dynamic e) {
+    var message = 'An error occurred, please check your credentials!';
+
+    if (e.message != null) {
+      message = e.message!;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
   }
 }
