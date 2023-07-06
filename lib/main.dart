@@ -21,10 +21,17 @@ class ChatApp extends StatelessWidget {
     return MaterialApp(
       title: appName,
       theme: ThemeData(
+        primarySwatch: Colors.pink,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.indigo,
-        ).copyWith(
-          secondary: Colors.amber,
+          primarySwatch: Colors.pink,
+          backgroundColor: Colors.pink,
+          accentColor: Colors.deepPurple,
+          brightness: Brightness.light,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            shape: const StadiumBorder(),
+          ),
         ),
       ),
       home: const AuthScreen(),
