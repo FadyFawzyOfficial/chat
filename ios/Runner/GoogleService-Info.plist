@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>191875635643-olm9b5cgh4lrcu4a8ldahmce360kglg7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.191875635643-olm9b5cgh4lrcu4a8ldahmce360kglg7</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAS4TQMTyJG_07SMUXywK1Zc5tAIfNjeFI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>191875635643</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fadyfawzy.chat</string>
+	<key>PROJECT_ID</key>
+	<string>fady-flutter-chat</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fady-flutter-chat.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:191875635643:ios:d0f4d0f0254c4560b64c9e</string>
+</dict>
+</plist>

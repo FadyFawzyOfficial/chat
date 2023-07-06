@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "191875635643",
+    "project_id": "fady-flutter-chat",
+    "storage_bucket": "fady-flutter-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191875635643:android:76c297e21bbe056cb64c9e",
+        "android_client_info": {
+          "package_name": "com.fadyfawzy.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191875635643-m5qtskpn1j44ra19if2rd6gdd9pip0k1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChrEGX7z2AVFpmekrgEMZQTqeijgTnr5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191875635643-m5qtskpn1j44ra19if2rd6gdd9pip0k1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "191875635643-olm9b5cgh4lrcu4a8ldahmce360kglg7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fadyfawzy.chat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
