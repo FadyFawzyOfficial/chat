@@ -6,12 +6,12 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
+    final firestoreInstance = FirebaseFirestore.instance
+        .collection('chats/Gp5Ct54QgPYeVJZf4hq4/messages');
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('chats/Gp5Ct54QgPYeVJZf4hq4/messages')
-            .snapshots(),
+        stream: firestoreInstance.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator.adaptive());
@@ -28,7 +28,10 @@ class ChatScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        // Send a dummy message to test the Firebase Firestore
+        onPressed: () => firestoreInstance.add(
+          {'text': 'This message is from the Mobile App'},
+        ),
       ),
     );
   }
