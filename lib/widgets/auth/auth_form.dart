@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key});
+  const AuthForm({super.key, required this.authenticate});
+
+  final void Function({
+    required String email,
+    required String username,
+    required String password,
+    required bool isSignIn,
+  }) authenticate;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -9,7 +16,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  var isSignIn = true;
+  var _isSignIn = true;
   var _email = '', _username = '', _password = '';
 
   @override
@@ -33,7 +40,7 @@ class _AuthFormState extends State<AuthForm> {
                           ? 'Please, provide a valid email address.'
                           : null,
                 ),
-                if (isSignIn)
+                if (_isSignIn)
                   TextFormField(
                     key: const ValueKey('username'),
                     decoration: const InputDecoration(labelText: 'Username'),
@@ -59,13 +66,13 @@ class _AuthFormState extends State<AuthForm> {
                   padding: const EdgeInsets.only(top: 32),
                   child: ElevatedButton(
                     onPressed: authenticate,
-                    child: Text(isSignIn ? 'Sign In' : 'Sign Up'),
+                    child: Text(_isSignIn ? 'Sign In' : 'Sign Up'),
                   ),
                 ),
                 TextButton(
-                  onPressed: () => setState(() => isSignIn = !isSignIn),
+                  onPressed: () => setState(() => _isSignIn = !_isSignIn),
                   child: Text(
-                    isSignIn
+                    _isSignIn
                         ? 'Create an account'
                         : 'I already have an account',
                   ),
@@ -90,10 +97,11 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     formCurrentState.save();
-    print(_email);
-    print(_username);
-    print(_password);
-
-    // Use these values to send an auth request ...
+    widget.authenticate(
+      email: _email,
+      username: _username,
+      password: _password,
+      isSignIn: _isSignIn,
+    );
   }
 }
