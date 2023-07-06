@@ -1,23 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({super.key, required this.authenticate});
-
-  final void Function({
-    required String email,
-    required String username,
-    required String password,
-    required bool isSignIn,
-    required BuildContext context,
-  }) authenticate;
+  const AuthForm({super.key});
 
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
+  final auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
-  var _isSignIn = true;
+
+  var _isSignIn = true, _isLoading = false;
   var _email = '', _username = '', _password = '';
 
   @override
@@ -63,21 +59,28 @@ class _AuthFormState extends State<AuthForm> {
                       ? 'Password must be at least 7 characters long.'
                       : null,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 32),
-                  child: ElevatedButton(
-                    onPressed: authenticate,
-                    child: Text(_isSignIn ? 'Sign In' : 'Sign Up'),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => setState(() => _isSignIn = !_isSignIn),
-                  child: Text(
-                    _isSignIn
-                        ? 'Create an account'
-                        : 'I already have an account',
-                  ),
-                ),
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 32),
+                            child: ElevatedButton(
+                              onPressed: _validateThenAuthenticate,
+                              child: Text(_isSignIn ? 'Sign In' : 'Sign Up'),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                setState(() => _isSignIn = !_isSignIn),
+                            child: Text(
+                              _isSignIn
+                                  ? 'Create an account'
+                                  : 'I already have an account',
+                            ),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -86,7 +89,7 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
-  void authenticate() {
+  void _validateThenAuthenticate() {
     // Hide the Soft Keyboard while Authentication
     FocusScope.of(context).unfocus();
 
@@ -97,13 +100,39 @@ class _AuthFormState extends State<AuthForm> {
       return;
     }
 
-    formCurrentState.save();
-    widget.authenticate(
-      email: _email,
-      username: _username,
-      password: _password,
-      isSignIn: _isSignIn,
-      context: context,
-    );
+    _authenticate();
+  }
+
+  Future<void> _authenticate() async {
+    UserCredential userCredential;
+
+    try {
+      if (_isSignIn) {
+        userCredential = await auth.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+      } else {
+        userCredential = await auth.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+      }
+    } on PlatformException catch (e) {
+      var message = 'An error occurred, please check your credentials!';
+
+      if (e.message != null) {
+        message = e.message!;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    } catch (e) {
+      debugPrint('$e');
+    }
   }
 }
