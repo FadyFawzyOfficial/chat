@@ -8,6 +8,7 @@ class AuthForm extends StatefulWidget {
     required String username,
     required String password,
     required bool isSignIn,
+    required BuildContext context,
   }) authenticate;
 
   @override
@@ -34,17 +35,17 @@ class _AuthFormState extends State<AuthForm> {
                   key: const ValueKey('email'),
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(labelText: 'Email'),
-                  onSaved: (email) => _email = email ?? '',
+                  onSaved: (email) => _email = email?.trim() ?? '',
                   validator: (email) =>
                       email == null || email.isEmpty || !email.contains('@')
                           ? 'Please, provide a valid email address.'
                           : null,
                 ),
-                if (_isSignIn)
+                if (!_isSignIn)
                   TextFormField(
                     key: const ValueKey('username'),
                     decoration: const InputDecoration(labelText: 'Username'),
-                    onSaved: (username) => _username = username ?? '',
+                    onSaved: (username) => _username = username?.trim() ?? '',
                     validator: (username) => username == null ||
                             username.isEmpty ||
                             username.length < 4
@@ -102,6 +103,7 @@ class _AuthFormState extends State<AuthForm> {
       username: _username,
       password: _password,
       isSignIn: _isSignIn,
+      context: context,
     );
   }
 }
