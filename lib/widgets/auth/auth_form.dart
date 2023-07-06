@@ -99,6 +99,7 @@ class _AuthFormState extends State<AuthForm> {
       return;
     }
 
+    formCurrentState.save();
     _authenticate();
   }
 
@@ -131,11 +132,12 @@ class _AuthFormState extends State<AuthForm> {
       }
     } on FirebaseAuthException catch (e) {
       displayErrorMessage(e);
+      setState(() => _isLoading = false);
     } on PlatformException catch (e) {
       displayErrorMessage(e);
+      setState(() => _isLoading = false);
     } catch (e) {
       debugPrint('$e');
-    } finally {
       setState(() => _isLoading = false);
     }
   }
