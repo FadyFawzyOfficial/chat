@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 //! I want to improve to ensure that this always is rendered in an efficient way.
@@ -10,13 +9,13 @@ import 'package:flutter/material.dart';
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isOwner;
-  final String userId;
+  final String username;
 
   const MessageBubble({
     Key? key,
     required this.message,
     required this.isOwner,
-    required this.userId,
+    required this.username,
   }) : super(key: key);
 
   @override
@@ -48,36 +47,12 @@ class MessageBubble extends StatelessWidget {
             crossAxisAlignment:
                 isOwner ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
-              //! The flaw is that I'm fetching that username here in the message bubble.
-              //! I'm fetching it with my FutureBuilder, which I added here this one.
-              //! And that means that for every new message bubble that's being
-              //! rendered, I reach out to Firebase and I fetch that data.
-              //* This can be good or bad. This can hammer this API quite a bit.
-              //! Now, the good news is, since this isn't a list, it should only
-              //! fetch the username for the messages that are actually being rendered.
-              //! And in addition, fire store also caches data locally.
-              //! So it's not going to make a million requests here probably.
-              //! Instead, it should cache data and not send too many requests.
-              //! Still, this is not something you might want here.
-              //! You maybe don't want to send a new request for every message bubble
-              //! that's being rendered. Therefore we could agree that we don't
-              //! want to fetch this here, but that instead when we create a message.
-              FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(userId)
-                    .get(),
-                builder: (context, snapshot) {
-                  return Text(
-                    snapshot.connectionState == ConnectionState.waiting
-                        ? 'Loading...'
-                        : snapshot.data?['username'] ?? '',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                },
+              Text(
+                username,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4),
               Text(

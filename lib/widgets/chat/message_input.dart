@@ -39,15 +39,24 @@ class _MessageInputState extends State<MessageInput> {
     );
   }
 
-  void _sendMessage() {
+  void _sendMessage() async {
     // Close or Hide the Keyboard
     FocusScope.of(context).unfocus();
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    //! So when we create a new message here in a new message widget,
+    //! we want to store the username next to the userId so that we already have
+    //! the username here and we don't need to fetch it again.
+    final username = (await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get())['username'] as String;
 
     FirebaseFirestore.instance.collection('chat').add(
       {
         'text': _message,
         'time': Timestamp.now(),
-        'userId': FirebaseAuth.instance.currentUser!.uid,
+        'userId': userId,
+        'username': username,
       },
     );
 

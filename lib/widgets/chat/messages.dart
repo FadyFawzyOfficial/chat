@@ -31,7 +31,7 @@ class Messages extends StatelessWidget {
               message: currentMessage['text'],
               isOwner: currentMessage['userId'] ==
                   FirebaseAuth.instance.currentUser!.uid,
-              userId: currentMessage['userId'],
+              username: currentMessage['username'],
               //! Now we need a unique key, we can create it with the ValueKey()
               //! and use some unique value, and every message here has a unique
               //! value. It has a unique document ID so we can reach out to chat
