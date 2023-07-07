@@ -41,6 +41,9 @@ dependencies:
   # Flutter plugin for Cloud Firestore, a cloud-hosted, noSQL database with live synchronization
   # and offline support on Android and iOS.
   cloud_firestore: ^4.8.2
+  # Flutter plugin for Firebase Auth, enabling Android and iOS authentication using passwords, 
+  # phone numbers and identity providers like Google, Facebook and Twitter.
+  firebase_auth: ^4.6.3
 
 dev_dependencies:
   flutter_test:
