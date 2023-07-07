@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MessageInput extends StatefulWidget {
@@ -46,6 +47,7 @@ class _MessageInputState extends State<MessageInput> {
       {
         'text': _message,
         'time': Timestamp.now(),
+        'userId': FirebaseAuth.instance.currentUser!.uid,
       },
     );
 
