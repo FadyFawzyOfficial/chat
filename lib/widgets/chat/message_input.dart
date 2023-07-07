@@ -42,8 +42,14 @@ class _MessageInputState extends State<MessageInput> {
     // Close or Hide the Keyboard
     FocusScope.of(context).unfocus();
 
-    FirebaseFirestore.instance.collection('chat').add({'text': _message});
+    FirebaseFirestore.instance.collection('chat').add(
+      {
+        'text': _message,
+        'time': Timestamp.now(),
+      },
+    );
 
     _messageController.clear();
+    _message = '';
   }
 }
