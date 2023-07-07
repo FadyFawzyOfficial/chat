@@ -31,6 +31,17 @@ class Messages extends StatelessWidget {
               message: currentMessage['text'],
               isOwner: currentMessage['userId'] ==
                   FirebaseAuth.instance.currentUser!.uid,
+              //! Now we need a unique key, we can create it with the ValueKey()
+              //! and use some unique value, and every message here has a unique
+              //! value. It has a unique document ID so we can reach out to chat
+              //! docs and access document ID.
+              //* Now we won't see a difference here, but behind the scenes this
+              //* ensures that Flutter will always be able to efficiently rerender
+              //* and update this list.
+              //* It might not need that.
+              //* It might be able to efficiently update this list even without the keys.
+              //* But it certainly also won't hurt.
+              key: ValueKey(currentMessage.id),
             );
           },
         );

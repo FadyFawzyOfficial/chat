@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
+//! I want to improve to ensure that this always is rendered in an efficient way.
+//! Let's use some keys. You learned that when you're working with lists of data,
+//! there can be issues with Flutter, updating your widgets and to ensure that
+//! Flutter is always able to efficiently update data in lists or widgets & lists.
+//! We add a new property which is of type key & we name it key & we simply then
+//! have a named argument here in the constructor where we point at the key.
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isOwner;
 
   const MessageBubble({
-    super.key,
+    Key? key,
     required this.message,
     required this.isOwner,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
