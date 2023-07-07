@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/chat/message_input.dart';
 import '../widgets/chat/messages.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -9,8 +9,6 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
-    final firestoreInstance = FirebaseFirestore.instance
-        .collection('chats/Gp5Ct54QgPYeVJZf4hq4/messages');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat'),
@@ -35,12 +33,16 @@ class ChatScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        children: const [
-          Expanded(
-            child: Messages(),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: const [
+            Expanded(
+              child: Messages(),
+            ),
+            MessageInput(),
+          ],
+        ),
       ),
     );
   }
