@@ -9,16 +9,7 @@ class AuthScreen extends StatelessWidget {
   Widget build(context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(
-        authenticate: _authenticate,
-      ),
+      body: const AuthForm(),
     );
   }
-
-  void _authenticate({
-    required String email,
-    required String username,
-    required String password,
-    required bool isSignIn,
-  }) {}
 }
