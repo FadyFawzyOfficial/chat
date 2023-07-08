@@ -46,10 +46,11 @@ class _MessageInputState extends State<MessageInput> {
     //! So when we create a new message here in a new message widget,
     //! we want to store the username next to the userId so that we already have
     //! the username here and we don't need to fetch it again.
-    final username = (await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .get())['username'] as String;
+    final userData =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+
+    final username = userData['username'] as String;
+    final imageUrl = userData['imageUrl'] as String;
 
     FirebaseFirestore.instance.collection('chat').add(
       {
@@ -57,6 +58,7 @@ class _MessageInputState extends State<MessageInput> {
         'time': Timestamp.now(),
         'userId': userId,
         'username': username,
+        'imageUrl': imageUrl,
       },
     );
 

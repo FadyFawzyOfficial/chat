@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'message_bubble.dart';
@@ -28,10 +27,7 @@ class Messages extends StatelessWidget {
           itemBuilder: (context, index) {
             final currentMessage = documents[index];
             return MessageBubble(
-              message: currentMessage['text'],
-              isOwner: currentMessage['userId'] ==
-                  FirebaseAuth.instance.currentUser!.uid,
-              username: currentMessage['username'],
+              message: currentMessage,
               //! Now we need a unique key, we can create it with the ValueKey()
               //! and use some unique value, and every message here has a unique
               //! value. It has a unique document ID so we can reach out to chat

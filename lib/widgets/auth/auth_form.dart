@@ -133,7 +133,7 @@ class _AuthFormState extends State<AuthForm> {
           password: _password,
         );
 
-        final imageUrl = _uploadUserImage(
+        final imageUrl = await _uploadUserImage(
           userId: userCredential.user!.uid,
           imageFile: _image!,
         );
