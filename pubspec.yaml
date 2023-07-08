@@ -38,12 +38,16 @@ dependencies:
   cupertino_icons: ^1.0.5
   # Flutter plugin for Firebase Core, enabling connecting to multiple Firebase apps.
   firebase_core: ^2.14.0
-  # Flutter plugin for Cloud Firestore, a cloud-hosted, noSQL database with live synchronization
-  # and offline support on Android and iOS.
-  cloud_firestore: ^4.8.2
   # Flutter plugin for Firebase Auth, enabling Android and iOS authentication using passwords, 
   # phone numbers and identity providers like Google, Facebook and Twitter.
   firebase_auth: ^4.6.3
+  # Flutter plugin for Firebase Cloud Storage, a powerful, simple, and cost-effective object storage service for Android and iOS.
+  firebase_storage: ^11.2.4
+  # Flutter plugin for Cloud Firestore, a cloud-hosted, noSQL database with live synchronization
+  # and offline support on Android and iOS.
+  cloud_firestore: ^4.8.2
+  # A Flutter plugin for iOS and Android for picking images from the image library, and taking new pictures with the camera.
+  image_picker: ^1.0.0
 
 dev_dependencies:
   flutter_test:
