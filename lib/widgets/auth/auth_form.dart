@@ -133,20 +133,12 @@ class _AuthFormState extends State<AuthForm> {
           password: _password,
         );
 
-        // Store the user image after SignUp the user
-        // Set the image path
-        final reference = FirebaseStorage.instance
-            .ref()
-            .child('user_images')
-            .child('${userCredential.user!.uid}.jpg');
+        final imageUrl = _uploadUserImage(
+          userId: userCredential.user!.uid,
+          imageFile: _image!,
+        );
 
-        // Upload the image file
-        await reference.putFile(_image!);
-
-        // Get the image url
-        final imageUrl = await reference.getDownloadURL();
-
-        // Store the username after SignUp the user
+        // Store the user name, email & image after SignUp the user
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userCredential.user!.uid)
@@ -168,6 +160,26 @@ class _AuthFormState extends State<AuthForm> {
       debugPrint('$e');
       setState(() => _isLoading = false);
     }
+  }
+
+  Future<String> _uploadUserImage({
+    required String userId,
+    required File imageFile,
+  }) async {
+    // Store the user image after SignUp the user
+    // Set the image path
+    final reference = FirebaseStorage.instance
+        .ref()
+        .child('user_images')
+        .child('$userId.jpg');
+
+    // Upload the image file
+    await reference.putFile(_image!);
+
+    // Get the image url
+    final imageUrl = await reference.getDownloadURL();
+
+    return imageUrl;
   }
 
   void displayErrorMessage(String? errorMessage) {
