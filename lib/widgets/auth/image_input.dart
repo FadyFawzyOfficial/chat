@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
   const ImageInput({super.key});
@@ -8,6 +11,8 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
+  File? _imageFile;
+
   @override
   Widget build(context) {
     return Material(
@@ -15,13 +20,28 @@ class _ImageInputState extends State<ImageInput> {
       shape: const CircleBorder(),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-        onTap: () {},
-        child: const CircleAvatar(
+        onTap: _pickImage,
+        child: CircleAvatar(
           radius: 48,
           backgroundColor: Colors.transparent,
-          child: Icon(Icons.add_a_photo_rounded),
+          backgroundImage: _imageFile == null ? null : FileImage(_imageFile!),
+          child: const Icon(Icons.add_a_photo_rounded),
         ),
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    final imagePicker = ImagePicker();
+    final imageXFile = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      //! Automatically Crop it to a max width of 700, so that our image isn't too big
+      maxWidth: 700,
+    );
+
+    if (imageXFile != null) {
+      final imageFile = File(imageXFile.path);
+      setState(() => _imageFile = imageFile);
+    }
   }
 }
