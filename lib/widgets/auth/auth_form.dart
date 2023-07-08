@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class _AuthFormState extends State<AuthForm> {
 
   var _isSignIn = true, _isLoading = false;
   var _email = '', _username = '', _password = '';
+  File? _image;
 
   @override
   Widget build(context) {
@@ -30,7 +33,7 @@ class _AuthFormState extends State<AuthForm> {
             key: _formKey,
             child: Column(
               children: [
-                if (!_isSignIn) const ImageInput(),
+                if (!_isSignIn) ImageInput(onPickImage: _onPickImage),
                 TextFormField(
                   key: const ValueKey('email'),
                   keyboardType: TextInputType.emailAddress,
@@ -91,12 +94,19 @@ class _AuthFormState extends State<AuthForm> {
     );
   }
 
+  void _onPickImage({File? imageFile}) => _image = imageFile;
+
   void _validateThenAuthenticate() {
     // Hide the Soft Keyboard while Authentication
     FocusScope.of(context).unfocus();
 
     final formCurrentState = _formKey.currentState;
     final isValid = formCurrentState != null && formCurrentState.validate();
+
+    if (!_isSignIn && _image == null) {
+      displayErrorMessage('Please, pick an image');
+      return;
+    }
 
     if (!isValid) {
       return;
@@ -134,10 +144,10 @@ class _AuthFormState extends State<AuthForm> {
         );
       }
     } on FirebaseAuthException catch (e) {
-      displayErrorMessage(e);
+      displayErrorMessage(e.message);
       setState(() => _isLoading = false);
     } on PlatformException catch (e) {
-      displayErrorMessage(e);
+      displayErrorMessage(e.message);
       setState(() => _isLoading = false);
     } catch (e) {
       debugPrint('$e');
@@ -145,11 +155,11 @@ class _AuthFormState extends State<AuthForm> {
     }
   }
 
-  void displayErrorMessage(dynamic e) {
+  void displayErrorMessage(String? errorMessage) {
     var message = 'An error occurred, please check your credentials!';
 
-    if (e.message != null) {
-      message = e.message!;
+    if (errorMessage != null) {
+      message = errorMessage;
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
