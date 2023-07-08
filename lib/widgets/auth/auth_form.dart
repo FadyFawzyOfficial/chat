@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -131,6 +132,14 @@ class _AuthFormState extends State<AuthForm> {
           email: _email,
           password: _password,
         );
+
+        // Store the user image after SignUp the user
+        final reference = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${userCredential.user!.uid}.jpg');
+
+        reference.putFile(_image!);
 
         // Store the username after SignUp the user
         await FirebaseFirestore.instance
