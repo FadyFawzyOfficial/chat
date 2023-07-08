@@ -134,12 +134,17 @@ class _AuthFormState extends State<AuthForm> {
         );
 
         // Store the user image after SignUp the user
+        // Set the image path
         final reference = FirebaseStorage.instance
             .ref()
             .child('user_images')
             .child('${userCredential.user!.uid}.jpg');
 
-        reference.putFile(_image!);
+        // Upload the image file
+        await reference.putFile(_image!);
+
+        // Get the image url
+        final imageUrl = await reference.getDownloadURL();
 
         // Store the username after SignUp the user
         await FirebaseFirestore.instance
@@ -149,6 +154,7 @@ class _AuthFormState extends State<AuthForm> {
           {
             'username': _username,
             'email': _email,
+            'imageUrl': imageUrl,
           },
         );
       }
