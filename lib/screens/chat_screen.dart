@@ -18,6 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    registerNotification();
   }
 
   @override
@@ -58,5 +59,11 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  // COMPLETED: Register with FCM
+  void registerNotification() {
+    //* 1. Instantiate Firebase Messaging
+    _firebaseMessaging = FirebaseMessaging.instance;
   }
 }
