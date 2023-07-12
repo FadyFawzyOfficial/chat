@@ -71,6 +71,13 @@ class _ChatScreenState extends State<ChatScreen> {
     //! Listen to messages whilst you application is in the foreground, listen
     //! to the 'onMessage' Stream.
     FirebaseMessaging.onMessage.listen(_onForegroundNotification);
+
+    //* 3. Handle Background Notifications those are received while tha App
+    //* in Background or Terminated (Killed or Mobile Screen is Locked)
+    //! There are a few things to keep in mind about your background message handler:
+    //!   1. It must not be an anonymous function.
+    //!   2. It must be a top-level function (e.g. not a class method which requires initialization).
+    FirebaseMessaging.onBackgroundMessage(_onBackgroundNotification);
   }
 
   //* 2. This utility method to handle the notifications received in Foreground
@@ -110,4 +117,14 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+}
+
+//* 3. Define the background message handler
+//! Outside of any class
+Future<void> _onBackgroundNotification(RemoteMessage message) async {
+  debugPrint('Got a message whilst in the background!');
+  debugPrint("Handling a background message: ${message.messageId}");
+  debugPrint('Message data: ${message.data}');
+  debugPrint('Message notification: ${message.notification?.title}');
+  debugPrint('Message notification: ${message.notification?.body}');
 }
