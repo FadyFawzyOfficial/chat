@@ -62,7 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   // COMPLETED: Register with FCM
-  void registerNotification() {
+  Future<void> registerNotification() async {
     //* 1. Instantiate Firebase Messaging
     _firebaseMessaging = FirebaseMessaging.instance;
 
@@ -81,6 +81,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
     //* 4. Handle Background Notifications when Pressed it to Open the App
     FirebaseMessaging.onMessageOpenedApp.listen(_onNotificationOpenedApp);
+
+    //* 5. Get the FCM (Firebase Cloud Messaging) Token to Send Notification
+    //* Message to a Specific User from the Server Side.
+    // Once your application has started, you can call the getToken method on
+    // the Cloud Messaging module to get the unique device token
+    // (if using a different push notification provider, such as Amazon SNS,
+    // you will need to call getAPNSToken on iOS):
+    // It request a registration token for sending messages to users from your
+    // app server side or other trusted server environment.
+    // Get the token each time the application loads
+    String? fcmToken = await _firebaseMessaging.getToken();
+    debugPrint(fcmToken);
   }
 
   //* 2. This utility method to handle the notifications received in Foreground
