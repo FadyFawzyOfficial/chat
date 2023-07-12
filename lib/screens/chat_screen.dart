@@ -78,6 +78,9 @@ class _ChatScreenState extends State<ChatScreen> {
     //!   1. It must not be an anonymous function.
     //!   2. It must be a top-level function (e.g. not a class method which requires initialization).
     FirebaseMessaging.onBackgroundMessage(_onBackgroundNotification);
+
+    //* 4. Handle Background Notifications when Pressed it to Open the App
+    FirebaseMessaging.onMessageOpenedApp.listen(_onNotificationOpenedApp);
   }
 
   //* 2. This utility method to handle the notifications received in Foreground
@@ -94,6 +97,18 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> _onForegroundNotification(RemoteMessage message) async {
     debugPrint('Got a message whilst in the foreground!');
     debugPrint('Handling a foreground message: ${message.messageId}');
+    showNotificationDialog(message);
+  }
+
+  //* 4. Define the Background Notifications those open the App
+  //* (Background -> Foreground)
+  Future<void> _onNotificationOpenedApp(RemoteMessage message) async {
+    debugPrint('Got a message whilst in Background or Terminated!');
+    debugPrint('Handling a message that open the App: ${message.messageId}');
+    showNotificationDialog(message);
+  }
+
+  void showNotificationDialog(RemoteMessage message) {
     debugPrint('Message data: ${message.data}');
 
     if (message.notification != null) {
