@@ -71,7 +71,16 @@ class _ChatScreenState extends State<ChatScreen> {
     //* Requesting permission (Notification): you must first ask the users
     //* permission (iOS). Now, on android this (the following) will do nothing
     //* but on iOS it will ask for (Notifications) permission
-    final notificationSettings = await _firebaseMessaging.requestPermission();
+    final notificationSettings = await _firebaseMessaging.requestPermission(
+      //! This type of permission system allows for notification permission to
+      //! be instantly granted without displaying a dialog to your user.
+      //! The permission allows notifications to be displayed quietly
+      //! (only visible within the device notification center).
+      provisional: true,
+      //? When a notification is displayed on the device, the user will be
+      //? presented with several actions prompting to keep receiving notifications
+      //? quietly, enable full notification permission or turn them off.
+    );
 
     //? On Apple based platforms, once a permission request has been handled by
     //? the user (authorized or denied), it is NOT possible to re-request permission.
