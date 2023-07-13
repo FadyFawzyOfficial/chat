@@ -66,6 +66,52 @@ class _ChatScreenState extends State<ChatScreen> {
     //* 1. Instantiate Firebase Messaging
     _firebaseMessaging = FirebaseMessaging.instance;
 
+    //* 6. Request permission
+    //* On iOS, this helps to take the user permissions
+    //* Requesting permission (Notification): you must first ask the users
+    //* permission (iOS). Now, on android this (the following) will do nothing
+    //* but on iOS it will ask for (Notifications) permission
+    final notificationSettings = await _firebaseMessaging.requestPermission(
+      //! This type of permission system allows for notification permission to
+      //! be instantly granted without displaying a dialog to your user.
+      //! The permission allows notifications to be displayed quietly
+      //! (only visible within the device notification center).
+      provisional: true,
+      //? When a notification is displayed on the device, the user will be
+      //? presented with several actions prompting to keep receiving notifications
+      //? quietly, enable full notification permission or turn them off.
+    );
+
+    //* 7. Enable Showing Foreground Notifications for iOS Platform.
+    //! Set all values back to false to revert to the default functionality.
+    // Sets the presentation options for Apple notifications when received in
+    // the foreground.
+    // By default, on Apple devices notification messages are only shown when
+    // the application is in the background or terminated. Calling this method
+    // updates these options to allow customizing notification presentation
+    // behavior whilst the application is in the foreground.
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+
+    //? On Apple based platforms, once a permission request has been handled by
+    //? the user (authorized or denied), it is NOT possible to re-request permission.
+    //? The user must instead update permission via the device Settings UI:
+    //* If the user denied permission altogether, they must enable app permission fully.
+    //* If the user accepted requested permission (without sound),
+    //* they must specifically enable the sound option themselves.
+    if (notificationSettings.authorizationStatus ==
+        AuthorizationStatus.authorized) {
+      debugPrint('User granted permission');
+    } else if (notificationSettings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      debugPrint('User granted provisional permission');
+    } else {
+      debugPrint('User declined or has not accepted permission');
+    }
+
     //* 2. Handle Foreground Notifications those are received while the App
     //* in Foreground
     //! Listen to messages whilst you application is in the foreground, listen
