@@ -82,6 +82,20 @@ class _ChatScreenState extends State<ChatScreen> {
       //? quietly, enable full notification permission or turn them off.
     );
 
+    //* 7. Enable Showing Foreground Notifications for iOS Platform.
+    //! Set all values back to false to revert to the default functionality.
+    // Sets the presentation options for Apple notifications when received in
+    // the foreground.
+    // By default, on Apple devices notification messages are only shown when
+    // the application is in the background or terminated. Calling this method
+    // updates these options to allow customizing notification presentation
+    // behavior whilst the application is in the foreground.
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true, // Required to display a heads up notification
+      badge: true,
+      sound: true,
+    );
+
     //? On Apple based platforms, once a permission request has been handled by
     //? the user (authorized or denied), it is NOT possible to re-request permission.
     //? The user must instead update permission via the device Settings UI:
