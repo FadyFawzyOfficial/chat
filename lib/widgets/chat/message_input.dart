@@ -23,6 +23,9 @@ class _MessageInputState extends State<MessageInput> {
           Expanded(
             child: TextField(
               controller: _messageController,
+              autocorrect: true,
+              enableSuggestions: true,
+              textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 labelText: 'Send a message ...',
               ),
