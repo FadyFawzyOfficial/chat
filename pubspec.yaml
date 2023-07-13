@@ -43,6 +43,8 @@ dependencies:
   firebase_auth: ^4.6.3
   # Flutter plugin for Firebase Cloud Storage, a powerful, simple, and cost-effective object storage service for Android and iOS.
   firebase_storage: ^11.2.4
+  # Flutter plugin for Firebase Cloud Messaging, a cross-platform messaging solution that lets you reliably deliver messages on Android and iOS.
+  firebase_messaging: ^14.6.4
   # Flutter plugin for Cloud Firestore, a cloud-hosted, noSQL database with live synchronization
   # and offline support on Android and iOS.
   cloud_firestore: ^4.8.2
