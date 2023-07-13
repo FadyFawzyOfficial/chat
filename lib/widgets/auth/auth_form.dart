@@ -38,6 +38,9 @@ class _AuthFormState extends State<AuthForm> {
                 TextFormField(
                   key: const ValueKey('email'),
                   keyboardType: TextInputType.emailAddress,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  textCapitalization: TextCapitalization.none,
                   decoration: const InputDecoration(labelText: 'Email'),
                   onSaved: (email) => _email = email?.trim() ?? '',
                   validator: (email) =>
@@ -48,6 +51,9 @@ class _AuthFormState extends State<AuthForm> {
                 if (!_isSignIn)
                   TextFormField(
                     key: const ValueKey('username'),
+                    autocorrect: true,
+                    enableSuggestions: false,
+                    textCapitalization: TextCapitalization.words,
                     decoration: const InputDecoration(labelText: 'Username'),
                     onSaved: (username) => _username = username?.trim() ?? '',
                     validator: (username) => username == null ||
